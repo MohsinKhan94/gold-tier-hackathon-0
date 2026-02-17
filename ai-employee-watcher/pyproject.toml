@@ -1,0 +1,13 @@
+[project]
+name = "ai-employee-watcher"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "google-genai>=1.63.0",
+    "google-generativeai>=0.8.6",
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+    "watchdog>=6.0.0",
+]

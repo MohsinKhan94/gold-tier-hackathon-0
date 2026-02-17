@@ -1,0 +1,107 @@
+🌐 Updated Pipeline (with your new asks)
+1. Input Layer
+
+Human query (already working ✅).
+
+Google Sheets: acts like a “content backlog” → topics curated by marketing/comms.
+
+2. Generation Layer
+
+RAG Bot: fetch live news + company PDFs → create multi-platform draft posts.
+
+Posts written back to Google Sheet (or a review queue).
+
+3. Approval Layer (Human-in-the-loop)
+
+All generated posts require approval checkpoint.
+
+Could be:
+
+✅ Google Sheets cell toggle (Approved = YES/NO) → simple for MVP.
+
+✅ Review Dashboard / Slack integration → industry standard for scaling teams.
+
+If rejected → loop back to RAG for revision.
+
+4. Publishing Layer
+
+Once approved:
+
+Post text to LinkedIn, Instagram, Facebook via APIs.
+
+Generate short script → pass to video generation model (Runway, Pika, Veo, etc.).
+
+Upload final video to TikTok/Reels/Facebook.
+
+5. Observability Layer
+
+Logs for each stage (input → generation → approval → publishing).
+
+Metrics:
+
+Turnaround time (topic → publish).
+
+Engagement (CTR, likes, views).
+
+Cost per post (LLM + video gen).
+
+📊 Future Workflow Evolution
+Near-term (MVP → Production)
+
+Use Google Sheets as the single source of truth (topics, drafts, approvals, status).
+
+Add basic moderation checks (toxicity, PII).
+
+Support multi-version drafts (LLM gives 2–3 styles, human picks best).
+
+Medium-term (Scale-up)
+
+Replace Sheets with a content dashboard:
+
+Approvals with side-by-side: sources, generated post, video preview.
+
+Analytics dashboard (performance per platform).
+
+Automate video templates: predefined styles per platform (TikTok upbeat, LinkedIn professional).
+
+Add A/B testing: multiple post variants → measure which performs better.
+
+Long-term (Enterprise-grade)
+
+Agent-driven scheduling: Agent decides when to post for max reach.
+
+Feedback loop: Engagement metrics → fine-tune prompts/templates automatically.
+
+Multi-agent collaboration:
+
+Research Agent (collects news).
+
+Writing Agent (creates drafts).
+
+Compliance Agent (checks brand/legal).
+
+Publishing Agent (handles APIs + scheduling).
+
+Brand Guardrails: tone/style guide enforced automatically.
+
+Autonomous campaigns: not just single posts, but week-long content calendars.
+
+🔑 Key Industry Best Practices to Include
+
+Human-in-loop stays mandatory until you have strong trust + brand guardrails.
+
+Video generation cost control: batch rendering, limit to approved posts only.
+
+Compliance logging: store every draft, approval, and final post for audit.
+
+Multi-tenant design (if you productize): allow different companies/brands to plug in their PDFs + brand sheet.
+
+Ethical guardrails: disclaimers for AI-generated content if required by platforms.
+
+✅ So in short:
+
+Now: Google Sheet (topics) → RAG → human approve → text post + video → publish.
+
+Next: Replace Google Sheet with dashboard, add analytics + auto-scheduling.
+
+Future: Multi-agent, feedback-driven, compliance-safe autonomous social media manager.

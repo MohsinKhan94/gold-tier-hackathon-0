@@ -1,0 +1,40 @@
+# Environment variables (API keys)
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# UV
+.uv/
+uv.lock
+
+# Obsidian
+.obsidian/
+.trash/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test files in watched folder
+Watch_This_Folder/*
+!Watch_This_Folder/.gitkeep
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
