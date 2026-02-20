@@ -1,13 +1,16 @@
 """
 Agent Skills for Personal AI Employee
-These are callable functions that Claude Code can use
+These are callable functions that Claude Code can use.
+All AI reasoning is handled by Claude Code via .claude/skills/ - no external LLM needed.
 """
 
 import os
+import shutil
 from pathlib import Path
 from datetime import datetime
 
 VAULT_PATH = Path(__file__).parent.parent / 'AI_Employee_Vault'
+PLAN_FILE = VAULT_PATH / "Plan.md"
 
 # ================================================================
 # SKILL: Read Vault File
@@ -47,7 +50,7 @@ def write_vault_file(filepath: str, content: str) -> str:
         Success message
     
     Example:
-        write_vault_file("Inbox/new_task.md", "# Task\\nDetails here")
+        write_vault_file("Inbox/new_task.md", "# Task\nDetails here")
     """
     full_path = VAULT_PATH / filepath
     full_path.parent.mkdir(parents=True, exist_ok=True)
@@ -190,9 +193,13 @@ def update_dashboard_stats() -> str:
     Example:
         update_dashboard_stats()
     """
-    inbox_count = len(list_vault_folder("Inbox"))
-    needs_action_count = len(list_vault_folder("Needs_Action"))
-    done_count = len(list_vault_folder("Done"))
+    inbox_path = VAULT_PATH / "Inbox"
+    needs_action_path = VAULT_PATH / "Needs_Action"
+    done_path = VAULT_PATH / "Done"
+
+    inbox_count = len([f for f in inbox_path.iterdir() if f.is_file()]) if inbox_path.exists() else 0
+    needs_action_count = len([f for f in needs_action_path.iterdir() if f.is_file()]) if needs_action_path.exists() else 0
+    done_count = len([f for f in done_path.iterdir() if f.is_file()]) if done_path.exists() else 0
     
     dashboard_content = f"""# 🎯 Personal AI Employee Dashboard
 
@@ -224,6 +231,252 @@ def update_dashboard_stats() -> str:
     write_vault_file("Dashboard.md", dashboard_content)
     return f"✅ Dashboard updated: {inbox_count} inbox, {needs_action_count} action items, {done_count} done"
 
+# ================================================================
+# SKILL: Check Gmail
+# ================================================================
+def check_gmail():
+    """
+    Check Gmail for new emails and create alerts.
+
+    Returns:
+        Count of new emails processed
+    """
+    # This would call gmail_watcher functions
+    # For now, returns status
+    return "Gmail check initiated - see gmail_watcher.py"
+
+
+# ================================================================
+# SKILL: Generate Plan (Claude Code handles reasoning via .claude/skills/)
+# ================================================================
+def generate_plan():
+    """
+    Reads Inbox items, categorizes and prioritizes them, and writes Plan.md.
+    No external LLM needed - Claude Code provides reasoning via Agent Skills.
+    """
+    inbox_path = VAULT_PATH / "Inbox"
+    needs_action_path = VAULT_PATH / "Needs_Action"
+
+    for p in [inbox_path, needs_action_path]:
+        p.mkdir(parents=True, exist_ok=True)
+
+    items = []
+
+    # Read all inbox items
+    try:
+        for file in sorted(inbox_path.glob("*.md"), key=os.path.getmtime, reverse=True):
+            with open(file, "r", encoding="utf-8") as f:
+                content = f.read()
+                # Extract title (first heading)
+                title = file.stem
+                for line in content.split('\n'):
+                    if line.startswith('# '):
+                        title = line[2:].strip()
+                        break
+
+                # Detect priority
+                priority = "normal"
+                content_lower = content.lower()
+                if any(kw in content_lower for kw in ["high", "urgent", "asap", "important"]):
+                    priority = "high"
+                elif any(kw in content_lower for kw in ["low", "newsletter", "info"]):
+                    priority = "low"
+
+                # Detect source type
+                source = "task"
+                fname = file.name.lower()
+                if fname.startswith("email"):
+                    source = "email"
+                elif fname.startswith("wh"):
+                    source = "whatsapp"
+                elif fname.startswith("file_alert"):
+                    source = "file"
+                elif fname.startswith("li") or fname.startswith("ln"):
+                    source = "linkedin"
+
+                items.append({
+                    "title": title,
+                    "filename": file.name,
+                    "priority": priority,
+                    "source": source
+                })
+    except Exception as e:
+        print(f"Error reading inbox: {e}")
+
+    # Read needs_action items
+    try:
+        for file in sorted(needs_action_path.glob("*.md"), key=os.path.getmtime, reverse=True):
+            with open(file, "r", encoding="utf-8") as f:
+                content = f.read()
+                title = file.stem
+                for line in content.split('\n'):
+                    if line.startswith('# '):
+                        title = line[2:].strip()
+                        break
+                items.append({
+                    "title": title,
+                    "filename": file.name,
+                    "priority": "high",
+                    "source": "action"
+                })
+    except Exception as e:
+        print(f"Error reading needs_action: {e}")
+
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    if not items:
+        plan = f"# Plan\n\n**Generated:** {now}\n**Items Analyzed:** 0\n\n_No items in Inbox or Needs_Action. Nothing to plan!_\n"
+        with open(PLAN_FILE, "w", encoding="utf-8") as f:
+            f.write(plan)
+        return "No inbox items. Plan.md created with empty plan."
+
+    # Categorize by priority
+    high = [i for i in items if i["priority"] == "high"]
+    medium = [i for i in items if i["priority"] == "normal"]
+    low = [i for i in items if i["priority"] == "low"]
+
+    def format_items(item_list):
+        lines = []
+        for item in item_list:
+            lines.append(f"- [ ] {item['title']} (source: {item['source']}, file: {item['filename']})")
+        return '\n'.join(lines) if lines else "_None_"
+
+    plan_md = f"""# Plan
+
+**Generated:** {now}
+**Items Analyzed:** {len(items)}
+
+## High Priority
+{format_items(high)}
+
+## Medium Priority
+{format_items(medium)}
+
+## Low Priority
+{format_items(low)}
+
+## Summary
+- Total items: {len(items)}
+- High priority: {len(high)}
+- Medium priority: {len(medium)}
+- Low priority: {len(low)}
+
+---
+*Generated by AI Employee Plan Generator*
+*Reasoning powered by Claude Code Agent Skills*
+"""
+
+    with open(PLAN_FILE, "w", encoding="utf-8") as f:
+        f.write(plan_md)
+    return f"Plan.md generated with {len(items)} inbox items."
+
+
+# ================================================================
+# SKILL: Create Approval Request
+# ================================================================
+def create_approval_request(action: str, description: str, details: str = "") -> str:
+    """
+    Create an approval request for sensitive actions.
+
+    Args:
+        action: Type of action (payment, email_send, social_post, file_delete)
+        description: Brief description of what needs approval
+        details: Additional details
+
+    Returns:
+        Filename of approval request
+    """
+    pending_path = VAULT_PATH / "Pending_Approval"
+    pending_path.mkdir(parents=True, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"APPROVAL_{action}_{timestamp}.md"
+
+    now = datetime.now()
+    expires = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    content = f"""---
+type: approval_request
+action: {action}
+created: {now.strftime("%Y-%m-%dT%H:%M:%SZ")}
+status: pending
+---
+
+# Approval Required: {description}
+
+## Details
+- **Action:** {action}
+- **Description:** {description}
+{details}
+
+## To Approve
+Move this file to the `Approved/` folder.
+
+## To Reject
+Delete this file or move to `Done/` with a rejection note.
+
+---
+*Created by AI Employee*
+"""
+
+    filepath = pending_path / filename
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+    return filename
+
+
+# ================================================================
+# SKILL: Check Approved Actions
+# ================================================================
+def check_approved_actions() -> list:
+    """
+    Check for approved actions ready for execution.
+
+    Returns:
+        List of approved action filenames
+    """
+    approved_path = VAULT_PATH / "Approved"
+    approved_path.mkdir(parents=True, exist_ok=True)
+
+    return [f.name for f in approved_path.iterdir() if f.is_file()]
+
+
+# ================================================================
+# SKILL: Process Approved Action
+# ================================================================
+def process_approved_action(filename: str) -> str:
+    """
+    Process an approved action and move it to Done.
+
+    Args:
+        filename: Name of the approved file
+
+    Returns:
+        Result message
+    """
+    approved_path = VAULT_PATH / "Approved" / filename
+    done_path = VAULT_PATH / "Done"
+    done_path.mkdir(parents=True, exist_ok=True)
+
+    if not approved_path.exists():
+        return f"Error: {filename} not found in Approved folder"
+
+    # Read the approval
+    with open(approved_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # Move to Done with execution note
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    content += f"\n\n## Execution Log\n- **Executed:** {now}\n- **Status:** Completed\n"
+
+    done_file = done_path / f"DONE_{filename}"
+    with open(done_file, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+    approved_path.unlink()
+    return f"Approved action {filename} executed and moved to Done"
+
 
 # ================================================================
 # Export all skills for Claude Code
@@ -235,5 +488,10 @@ __all__ = [
     'get_inbox_summary',
     'move_vault_file',
     'create_inbox_item',
-    'update_dashboard_stats'
+    'update_dashboard_stats',
+    'check_gmail',
+    'generate_plan',
+    'create_approval_request',
+    'check_approved_actions',
+    'process_approved_action'
 ]

@@ -1,46 +1,41 @@
-
-### File 4: Create `Skills/README.md`
-
-```markdown
 # AI Agent Skills Library
 
-This folder contains all documented skills (capabilities) of your Personal AI Employee.
+This folder contains documentation for the Personal AI Employee's capabilities.
 
-## Active Skills (Bronze Tier)
+## Claude Code Agent Skills (.claude/skills/)
 
-### 🟢 Vault Operations
-Core read/write operations for Obsidian vault
-- **File:** [vault_operations.md](vault_operations.md)
-- **Script:** `gemini_agent.py`
+All AI functionality is implemented as proper Claude Code Agent Skills:
 
-### 🟢 File System Monitoring
-Watch folders for new files and create alerts
-- **File:** [file_monitoring.md](file_monitoring.md)
-- **Script:** `file_watcher.py`
+| Skill | Status | Script |
+|-------|--------|--------|
+| vault-operations | Active | `skills.py` |
+| file-monitoring | Active | `file_watcher.py` |
+| email-monitoring | Active | `gmail_watcher.py` |
+| whatsapp-monitoring | Active | `mock_watcher.py`, `whatsapp_server.py` |
+| linkedin-posting | Active | `linkedin_poster.py` |
+| plan-generator | Active | `skills.py` |
+| dashboard-updater | Active | `skills.py` |
+| human-approval | Active | `skills.py` |
+| inbox-manager | Active | `skills.py` |
 
-### 🟡 Email Monitoring (Planned)
-Monitor Gmail and process emails
-- **File:** [email_monitoring.md](email_monitoring.md)
-- **Script:** `gmail_watcher.py` (future)
+## Legacy Skill Docs (This Folder)
+
+- [vault_operations.md](vault_operations.md) - Core vault read/write operations
+- [file_monitoring.md](file_monitoring.md) - File system watcher documentation
+- [email_monitoring.md](email_monitoring.md) - Gmail monitoring documentation
 
 ## How Skills Work
 
-Each skill is:
-1. **Documented** in a `.md` file (this folder)
-2. **Implemented** as Python code (`ai-employee-watcher/`)
-3. **Callable** by Claude Code or other scripts
+Each Claude Code Agent Skill is:
+1. **Defined** in `.claude/skills/<name>/SKILL.md` (YAML frontmatter + instructions)
+2. **Backed by** Python functions in `ai-employee-watcher/skills.py`
+3. **Auto-discovered** by Claude Code at startup
+4. **Invocable** via `/skill-name` or automatically when context matches
 
 ## Adding New Skills
 
-To add a new skill:
-1. Create `SkillName.md` in this folder
-2. Implement the Python code
-3. Test it works
-4. Document usage examples
-5. Update this README
-
-## Skill Status Indicators
-- 🟢 Active & Working
-- 🟡 Planned / In Progress
-- 🔴 Broken / Needs Fix
-- ⚪ Deprecated
+1. Create `.claude/skills/<skill-name>/SKILL.md`
+2. Add YAML frontmatter (name, description)
+3. Write instructions in markdown body
+4. Implement Python backing functions if needed
+5. Update SKILLS.md in vault root

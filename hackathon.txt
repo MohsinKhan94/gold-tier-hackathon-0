@@ -1,0 +1,121 @@
+Personal AI Employee Hackathon 0: Building Autonomous FTEs (Full-Time Equivalent) in 2026
+Tagline: Your life and business on autopilot. Local-first, agent-driven, human-in-the-loop.
+This document serves as a comprehensive architectural blueprint and hackathon guide for building a "Digital FTE" (Full-Time Equivalent). It proposes a futuristic, local-first approach to automation where an AI agent—powered by Claude Code and Obsidian—proactively manages personal and business affairs 24/7. You can also think of it as a "Smart Consultant" (General Agents). The focus is on high-level reasoning, autonomy, and flexibility. Think of it as hiring a senior employee who figures out how to solve the problems.
+This hackathon takes the concept of a "Personal AI Employee" to its logical extreme. It doesn't just wait for you to type; it proactively manages your "Personal Affairs" (Gmail, WhatsApp, Bank) and your "Business" (Social Media, Payments, Project Tasks) using Claude Code as the executor and Obsidian as the management dashboard. 
+All our faculty members and students will build this Personal AI Employee using Claude Code. 
+Standout Idea: The "Monday Morning CEO Briefing," where the AI autonomously audits bank transactions and tasks to report revenue and bottlenecks, transforms the AI from a chatbot into a proactive business partner.
+Architecture & Tech Stack:
+The proposed stack is robust, privacy-focused, and clever:
+The Brain: Claude Code acts as the reasoning engine. We add the Ralph Wiggum Stop hook to let the agent continuously iterate until the assigned task is complete.
+The Memory/GUI: Obsidian (local Markdown) is used as the dashboard, keeping data local and accessible.
+The Senses (Watchers): Lightweight Python scripts monitor Gmail, WhatsApp, and filesystems to trigger the AI.
+The Hands (MCP): Model Context Protocol (MCP) servers handle external actions like sending emails or clicking buttons.
+This architecture solves the "lazy agent" problem by using "Watchers" to wake the agent up rather than waiting for user input and "Ralph Wiggum" (a Stop hook pattern) to keep it working until done.
+This is an exceptional technical hackathon project. It moves beyond "prompt engineering" into "agent engineering." It provides a complete, viable path to building a functional autonomous agent using tools available in 2026 (or today).
+
+Research and Show Case Meeting Every Wednesday:
+We will be holding a Research Meeting every Wednesday at 10:00 pm on Zoom all of you are welcome to join, the first meeting will be held on Wednesday, Jan 7th, 2026:
+https://us06web.zoom.us/j/87188707642?pwd=a9XloCsinvn1JzICbPc2YGUvWTbOTr.1
+Meeting ID: 871 8870 7642
+Passcode: 744832
+If the Zoom meeting is full, you may watch live or recording at:
+https://www.youtube.com/@panaversity 
+In these meetings we will be teaching each other how to build and enhance our first AI Employee. 
+Digital FTE: The New Unit of Value
+A Digital FTE (Full-Time Equivalent) is an AI agent that is built, "hired," and priced as if it were a human employee. This shifts the conversation from "software licenses" to "headcount budgets."
+Human FTE vs Digital FTE
+Feature
+Human FTE
+Digital FTE (Custom Agent)
+Availability
+40 hours / week
+168 hours / week (24/7)
+Monthly Cost
+$4,000 – $8,000+
+$500 – $2,000
+Ramp-up Time
+3 – 6 Months
+Instant (via SKILL.md)
+Consistency
+Variable (85–95% accuracy)
+Predictable (99%+ consistency)
+Scaling
+Linear (Hire 10 for 10x work)
+Exponential (Instant duplication)
+Cost per Task
+~$3.00 – $6.00
+~$0.25 – $0.50
+Annual Hours
+~2,000 hours
+~8,760 hours
+
+
+The 'Aha!' Moment: A Digital FTE works nearly 9,000 hours a year vs a human's 2,000. The cost per task reduction (from ~$5.00 to ~$0.50) is an 85–90% cost saving—usually the threshold where a CEO approves a project without further debate.
+
+Prerequisites & Setup
+Before diving into building your Personal AI Employee, ensure you have the following prerequisites in place. Estimated total setup time: 2-3 hours.
+
+Required Software
+Component
+Requirement
+Purpose
+Claude Code
+Active subscription (Pro or Use Free Gemini API with Claude Code Router)
+Primary reasoning engine
+Obsidian
+v1.10.6+ (free)
+Knowledge base & dashboard
+Python
+3.13 or higher
+Sentinel scripts & orchestration
+Node.js
+v24+ LTS
+MCP servers & automation
+Github Desktop
+Latest stable
+Version control for your vault
+
+
+Hardware Requirements
+Minimum: 8GB RAM, 4-core CPU, 20GB free disk space
+Recommended: 16GB RAM, 8-core CPU, SSD storage
+For always-on operation: Consider a dedicated mini-PC or cloud VM
+Stable internet connection for API calls (10+ Mbps recommended)
+Skill Level Expectations
+This hackathon assumes intermediate technical proficiency:
+Comfortable with command-line interfaces (terminal/bash)
+Understanding of file systems and folder structures
+Familiarity with APIs (what they are, how to call them)
+No prior AI/ML experience required
+Able to use and prompt Claude Code
+Prompt Claude Code to to convert AI functionality into Agent Skills
+
+Pre-Hackathon Checklist
+Install all required software listed above
+Create a new Obsidian vault named "AI_Employee_Vault"
+Verify Claude Code works by running: claude --version
+Set up a UV Python project
+Join the Wednesday Research Meeting Zoom link
+
+
+Hackathon Scope & Tiered Deliverables
+To accommodate varying skill levels and time availability, we define three achievement tiers. Choose your target based on your experience and ambition.
+Bronze Tier: Foundation (Minimum Viable Deliverable)
+Estimated time: 8-12 hours
+Obsidian vault with Dashboard.md and Company_Handbook.md
+One working Watcher script (Gmail OR file system monitoring)
+Claude Code successfully reading from and writing to the vault
+Basic folder structure: /Inbox, /Needs_Action, /Done
+All AI functionality should be implemented as Agent Skills
+Silver Tier: Functional Assistant
+Estimated time: 20-30 hours
+All Bronze requirements plus:
+Two or more Watcher scripts (e.g., Gmail + Whatsapp + LinkedIn)
+Automatically Post on LinkedIn about business to generate sales
+Claude reasoning loop that creates Plan.md files
+One working MCP server for external action (e.g., sending emails)
+Human-in-the-loop approval workflow for sensitive actions
+Basic scheduling via cron or Task Scheduler
+All AI functionality should be implemented as Agent Skills
+
+where Agent Skills refers to:https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
