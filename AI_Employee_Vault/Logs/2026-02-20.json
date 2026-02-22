@@ -1,0 +1,351 @@
+[
+  {
+    "timestamp": "2026-02-20T22:44:14.762885",
+    "action_type": "test_gold_tier",
+    "actor": "claude_code",
+    "target": "integration_test",
+    "parameters": {
+      "phase": "gold"
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:47.580009",
+    "action_type": "ceo_briefing_generated",
+    "actor": "claude_code",
+    "target": "C:\\Users\\useerr\\Desktop\\hackthon-0\\bronze-tier\\AI_Employee_Vault\\Briefings\\2026-02-20_Monday_Briefing.md",
+    "parameters": {
+      "filename": "2026-02-20_Monday_Briefing.md"
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:55.559550",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260217_162954_19c6b2d1.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "personal"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:55.561477",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260217_162956_19c6b2c4.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "personal"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:55.562477",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260217_162959_19c6b189.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "general"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:55.564489",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260219_102414_19c745ab.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "general"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:55.566473",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260219_102817_19c745e6.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "social"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        },
+        {
+          "type": "social_post",
+          "description": "Create social media content"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:55.568472",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260219_111134_19c74865.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "general"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.232305",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260219_130641_19c74ef9.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "business"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "create_crm_lead",
+          "description": "Create CRM lead in Odoo"
+        },
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.234999",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260220_161601_19c7ab43.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "personal"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.236860",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260220_161623_19c7ab43.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "personal"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.238489",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260220_161625_19c7ab18.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "general"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.240746",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260220_161626_19c7a9b1.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "social"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        },
+        {
+          "type": "social_post",
+          "description": "Create social media content"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.242749",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260220_161627_19c7a46f.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "general"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.244779",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "Email_20260220_161628_19c7984b.md",
+    "parameters": {
+      "source": "email",
+      "domains": [
+        "personal",
+        "social"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "draft_reply",
+          "description": "Draft email reply"
+        },
+        {
+          "type": "social_post",
+          "description": "Create social media content"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.336615",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "WH_20260218_112640.md",
+    "parameters": {
+      "source": "file",
+      "domains": [
+        "business",
+        "personal"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "create_crm_lead",
+          "description": "Create CRM lead in Odoo"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T22:44:56.404167",
+    "action_type": "cross_domain_classification",
+    "actor": "claude_code",
+    "target": "WH_20260219_095906.md",
+    "parameters": {
+      "source": "file",
+      "domains": [
+        "business",
+        "personal"
+      ],
+      "is_urgent": false,
+      "suggested_actions": [
+        {
+          "type": "create_crm_lead",
+          "description": "Create CRM lead in Odoo"
+        }
+      ]
+    },
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T23:13:43.983719",
+    "action_type": "ceo_briefing_generated",
+    "actor": "claude_code",
+    "target": "C:\\Users\\useerr\\Desktop\\hackthon-0\\bronze-tier\\AI_Employee_Vault\\Briefings\\2026-02-20_Monday_Briefing.md",
+    "parameters": {
+      "filename": "2026-02-20_Monday_Briefing.md"
+    },
+    "result": "success"
+  }
+]

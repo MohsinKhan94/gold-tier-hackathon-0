@@ -1,0 +1,64 @@
+ Phase 1: Read & Query (Odoo → Claude)
+
+  1. "List all my customers in Odoo"
+  2. "List all my vendors"
+  3. "Search all products in Odoo"
+  4. "Show me all invoices"
+  5. "Show me all sale orders"
+  6. "What's my account balance?"
+  7. "Show me my CRM pipeline"
+
+  Phase 2: Create & Write (Claude → Odoo)
+
+  8. "Create a new customer called PakTech Solutions with email info@paktech.pk and phone +92-311-5555555"
+  9. "Create a new product called Cloud Hosting with price 500"
+  10. "Create a sale order for PakTech Solutions for Cloud Hosting, quantity 3"
+  11. "Confirm that sale order"
+  12. "Create an invoice for PakTech Solutions for Cloud Hosting, quantity 3, price 500"
+  13. "Confirm that invoice"
+  14. "Create a CRM lead called 'Enterprise Cloud Migration' for PakTech Solutions with expected revenue 50000"
+
+  Phase 3: Verify & Report (Odoo → Obsidian)
+
+  15. "What's my updated account balance now?"
+  16. "Generate the CEO briefing"
+  17. "Show me the briefing file in the vault"
+  18. "Update my dashboard"
+  19. "Show me the dashboard"
+
+  Phase 4: Cross-Domain (Email → Odoo → Vault)
+
+  20. "Check my inbox for any items"
+  21. "Create a plan for today based on inbox items"
+  22. "Show me today's audit log"
+
+  Phase 5: Full Business Scenario (The Real Test)
+
+  This one tests the whole chain in one prompt:
+
+  23. "A new client named FutureApps Corp (email: ceo@futureapps.io, phone: +92-333-9999999)
+      wants to buy 2 units of AI Chatbot Development at 2000 each.
+      Create the customer, create a sale order, create an invoice, confirm it,
+      create a CRM lead for 'AI Chatbot Partnership' with expected revenue 30000,
+      and then update my dashboard."
+
+  And finally:
+
+  24. "Generate the CEO briefing and show me the full financial summary"
+
+  ---
+  What Each Phase Tests
+
+  ┌──────────────────┬─────────────────────────────────────────────────┬───────────────┐
+  │      Phase       │                      Tests                      │     Flow      │
+  ├──────────────────┼─────────────────────────────────────────────────┼───────────────┤
+  │ 1. Read          │ All 16 MCP tools respond correctly              │ Odoo → Claude │
+  ├──────────────────┼─────────────────────────────────────────────────┼───────────────┤
+  │ 2. Create        │ CRUD operations, auto-lookup, confirm workflows │ Claude → Odoo │
+  ├──────────────────┼─────────────────────────────────────────────────┼───────────────┤
+  │ 3. Report        │ Briefing generation, dashboard update           │ Odoo → Vault  │
+  ├──────────────────┼─────────────────────────────────────────────────┼───────────────┤
+  │ 4. Cross-Domain  │ Inbox triage, plan generation, audit trail      │ Vault → Vault │
+  ├──────────────────┼─────────────────────────────────────────────────┼───────────────┤
+  │ 5. Full Scenario │ Complete business workflow in one shot          │ End-to-End    │
+  └──────────────────┴─────────────────────────────────────────────────┴───────────────┘

@@ -1,10 +1,11 @@
-# Agent Skills - Personal AI Employee
+# Agent Skills - Personal AI Employee (Gold Tier)
 
 This document defines all available skills that Claude Code can use to manage this Obsidian vault.
 All AI functionality is implemented as **Claude Code Agent Skills** in `.claude/skills/`.
 
 ## Agent Skills (.claude/skills/)
 
+### Bronze + Silver Skills (10)
 | Skill | Description | Invocation |
 |-------|------------|------------|
 | vault-operations | Read, write, list, move vault files | `/vault-operations` |
@@ -18,84 +19,164 @@ All AI functionality is implemented as **Claude Code Agent Skills** in `.claude/
 | inbox-manager | Triage and process inbox items | `/inbox-manager` |
 | email-sending | Send, draft, search emails via Gmail MCP | `/email-sending` |
 
+### Gold Skills (7)
+| Skill | Description | Invocation |
+|-------|------------|------------|
+| odoo-accounting | Manage Odoo ERP - invoices, customers, vendors, sales, CRM | `/odoo-accounting` |
+| facebook-posting | Post to Facebook, view engagement, get page insights | `/facebook-posting` |
+| instagram-posting | Post images/carousels to Instagram, view engagement | `/instagram-posting` |
+| twitter-posting | Post tweets, create polls, search, get metrics | `/twitter-posting` |
+| ceo-briefing | Generate Monday Morning CEO Briefing from Odoo + vault data | `/ceo-briefing` |
+| audit-logger | View/manage structured JSON audit logs | `/audit-logger` |
+| error-recovery | Monitor system health, watchdog, retry queue | `/error-recovery` |
+
+**Total: 17 Agent Skills**
+
 ## MCP Servers
 
 | Server | Transport | Tools | File |
 |--------|-----------|-------|------|
-| gmail | stdio | send_email, draft_email, search_emails, list_recent_emails | `ai-employee-watcher/gmail_mcp_server.py` |
+| gmail | stdio | 4 tools (email send/draft/search) | `gmail_mcp_server.py` |
+| odoo | stdio | 16 tools (ERP operations) | `odoo_mcp_server.py` |
+| social | stdio | 17 tools (Facebook/Instagram/Twitter) | `social_mcp_server.py` |
 
-**Configuration:** `.claude/settings.local.json` registers the Gmail MCP server with Claude Code.
+**Configuration:** `.claude/settings.local.json`
 
-### Gmail MCP Tools
-- **send_email(to, subject, body, cc?, bcc?)** - Send an email via Gmail API
-- **draft_email(to, subject, body)** - Create a draft in Gmail
-- **search_emails(query, max_results?)** - Search emails with Gmail query syntax
-- **list_recent_emails(max_results?)** - List recent unread emails
+### Gmail MCP Tools (4)
+- **send_email(to, subject, body, cc?, bcc?)** - Send an email
+- **draft_email(to, subject, body)** - Create a draft
+- **search_emails(query, max_results?)** - Search emails
+- **list_recent_emails(max_results?)** - List recent unread
 
-All actions are logged to `AI_Employee_Vault/Logs/email_actions_*.md`.
+### Odoo MCP Tools (16)
+**Customers:**
+- **list_customers(limit?)** - List customers
+- **create_customer(name, email?, phone?, street?, city?, country?)** - Create customer
+
+**Vendors:**
+- **list_vendors(limit?)** - List vendors
+- **create_vendor(name, email?, phone?)** - Create vendor
+
+**Products:**
+- **search_products(name?, limit?)** - Search products
+- **create_product(name, price?, product_type?)** - Create product
+
+**Invoices:**
+- **create_invoice(customer_name, product_name, quantity?, price_unit?)** - Create invoice
+- **list_invoices(state?, limit?)** - List invoices
+- **get_invoice(invoice_id)** - Get invoice details
+- **confirm_invoice(invoice_id)** - Post a draft invoice
+
+**Sale Orders:**
+- **create_sale_order(customer_name, product_name, quantity?, price_unit?)** - Create sale order
+- **list_sale_orders(limit?)** - List sale orders
+- **confirm_sale_order(order_id)** - Confirm quotation
+
+**Accounting:**
+- **get_account_balance()** - Financial summary (receivable, payable, revenue, expenses)
+
+**CRM:**
+- **list_crm_leads(limit?)** - List CRM leads
+- **create_crm_lead(name, customer_name?, email?, phone?, expected_revenue?)** - Create lead
+
+### Social MCP Tools (17)
+**Facebook (4):**
+- **post_to_facebook(message, link?)** - Post to Facebook Page
+- **get_facebook_page_info()** - Get page info and followers
+- **get_facebook_posts(limit?)** - Get posts with engagement
+- **get_facebook_insights(period?, metric?)** - Get page analytics
+
+**Instagram (5):**
+- **post_to_instagram(image_url, caption?)** - Post image to Instagram
+- **post_carousel_to_instagram(image_urls, caption?)** - Post carousel (2-10 images)
+- **get_instagram_profile()** - Get profile info and followers
+- **get_instagram_media(limit?)** - Get posts with engagement
+- **get_instagram_insights(media_id)** - Get post insights
+
+**Twitter/X (6):**
+- **post_tweet(text)** - Post a tweet (280 char max)
+- **post_tweet_with_poll(text, options, duration_minutes?)** - Tweet with poll
+- **delete_tweet(tweet_id)** - Delete a tweet
+- **get_twitter_user_info()** - Get profile info
+- **get_tweet_metrics(tweet_id)** - Get tweet engagement
+- **search_recent_tweets(query, limit?)** - Search recent tweets
+
+**Cross-Platform (1):**
+- **get_social_engagement_summary()** - Combined engagement across all platforms
+
+All social actions are logged to `AI_Employee_Vault/Logs/social_actions_*.md`.
+
+## Gold Tier Infrastructure
+
+### Cross-Domain Orchestrator (`orchestrator.py`)
+Routes events across personal/business domains. Classifies inbox items and enriches with Odoo data.
+
+### Watchdog Monitor (`watchdog_monitor.py`)
+Monitors all watcher processes, auto-restarts crashed ones (max 5 retries), health logging.
+
+### Retry Handler (`retry_handler.py`)
+Exponential backoff retry for API calls. Queues failed actions. **Never auto-retries payments.**
+
+### CEO Briefing (`ceo_briefing.py`)
+Weekly briefing pulling from Odoo, Done/ tasks, audit logs, and Business_Goals.md.
+
+### Audit Logger (`audit_logger.py`)
+Structured JSON logging for every action. 90-day retention. Stored in Logs/YYYY-MM-DD.json.
+
+### Ralph Wiggum Stop Hook (`ralph_wiggum.py`)
+Keeps Claude Code running until task is complete. Max 10 iterations safety valve.
+
+### Master Launcher (`start_gold.py`)
+Launches all Gold Tier services with watchdog, scheduled tasks (CEO briefing, audit cleanup, cross-domain scan).
 
 ## Python Skill Functions (ai-employee-watcher/skills.py)
 
-### 1. read_vault_file(filepath)
-**Purpose:** Read any file from the vault
-**Example:** `read_vault_file("Inbox/task.md")`
-
-### 2. write_vault_file(filepath, content)
-**Purpose:** Write or update a vault file
-**Example:** `write_vault_file("Inbox/new.md", "# Task\nDetails")`
-
-### 3. list_vault_folder(folder)
-**Purpose:** List all files in a folder
-**Example:** `list_vault_folder("Inbox")`
-
-### 4. get_inbox_summary()
-**Purpose:** Get statistics about inbox
-**Example:** `get_inbox_summary()`
-
-### 5. move_vault_file(filename, from_folder, to_folder)
-**Purpose:** Move files between folders
-**Example:** `move_vault_file("task.md", "Inbox", "Done")`
-
-### 6. create_inbox_item(title, content, priority)
-**Purpose:** Create new inbox tasks
-**Example:** `create_inbox_item("Review", "Check docs", "high")`
-
-### 7. update_dashboard_stats()
-**Purpose:** Auto-update dashboard with current counts
-**Example:** `update_dashboard_stats()`
-
-### 8. generate_plan()
-**Purpose:** Reads Inbox, categorizes items, and creates Plan.md with priorities.
-**Example:** `generate_plan()`
-
-### 9. create_approval_request(action, description, details)
-**Purpose:** Create a human-in-the-loop approval request for sensitive actions
-**Example:** `create_approval_request("payment", "Pay invoice #123", "Amount: $500")`
-
-### 10. check_approved_actions()
-**Purpose:** List approved actions ready for execution
-**Example:** `check_approved_actions()`
-
-### 11. process_approved_action(filename)
-**Purpose:** Execute an approved action and archive it
-**Example:** `process_approved_action("APPROVAL_payment_20260219.md")`
+1. **read_vault_file(filepath)** - Read any vault file
+2. **write_vault_file(filepath, content)** - Write to vault
+3. **list_vault_folder(folder)** - List folder contents
+4. **get_inbox_summary()** - Inbox statistics
+5. **move_vault_file(filename, from, to)** - Move between folders
+6. **create_inbox_item(title, content, priority)** - Create inbox task
+7. **update_dashboard_stats()** - Update dashboard counts
+8. **generate_plan()** - Generate Plan.md
+9. **create_approval_request(action, description, details)** - Request approval
+10. **check_approved_actions()** - List approved actions
+11. **process_approved_action(filename)** - Execute approved action
 
 ## How Claude Code Uses These Skills
 
-When you interact with Claude Code, you can say:
-- "Show me what's in my inbox" -> Uses `/inbox-manager`
-- "Create a plan for today" -> Uses `/plan-generator`
-- "Update my dashboard" -> Uses `/dashboard-updater`
-- "Draft a LinkedIn post" -> Uses `/linkedin-posting`
-- "Check for approved actions" -> Uses `/human-approval`
-- "Send an email to X" -> Uses `/email-sending` (MCP)
-- "Draft a reply to this email" -> Uses `/email-sending` (MCP)
-- "Search my emails for invoices" -> Uses `/email-sending` (MCP)
+- "Show me what's in my inbox" -> `/inbox-manager`
+- "Create a plan for today" -> `/plan-generator`
+- "Create an invoice for Test Corp" -> `/odoo-accounting`
+- "List my customers in Odoo" -> `/odoo-accounting`
+- "How's the business doing?" -> `/ceo-briefing`
+- "What did the AI do today?" -> `/audit-logger`
+- "Is everything running OK?" -> `/error-recovery`
+- "Send an email to X" -> `/email-sending`
+- "Draft a LinkedIn post" -> `/linkedin-posting`
 
-## Implementation
-- Agent Skills: `.claude/skills/<skill-name>/SKILL.md`
-- Python functions: `ai-employee-watcher/skills.py`
-- Watchers: `ai-employee-watcher/file_watcher.py`, `mock_watcher.py`, `gmail_watcher.py`
-- Poster: `ai-employee-watcher/linkedin_poster.py`
-- MCP Server: `ai-employee-watcher/gmail_mcp_server.py`
-- Scheduler: `ai-employee-watcher/scheduled_task.py`
+## Implementation Files
+
+```
+ai-employee-watcher/
+├── gmail_mcp_server.py     # Gmail MCP Server
+├── odoo_mcp_server.py      # Odoo MCP Server (Gold)
+├── social_mcp_server.py    # Social Media MCP Server (Gold)
+├── audit_logger.py         # Structured JSON logging (Gold)
+├── retry_handler.py        # Exponential backoff retry (Gold)
+├── watchdog_monitor.py     # Process health monitor (Gold)
+├── orchestrator.py         # Cross-domain routing (Gold)
+├── ceo_briefing.py         # CEO Weekly Briefing (Gold)
+├── ralph_wiggum.py         # Stop Hook loop (Gold)
+├── start_gold.py           # Gold Tier launcher (Gold)
+├── start_silver.py         # Silver Tier launcher
+├── scheduled_task.py       # Periodic task runner
+├── skills.py               # Python skill functions
+├── file_watcher.py         # File system watcher
+├── gmail_watcher.py        # Gmail watcher
+├── mock_watcher.py         # WhatsApp/LinkedIn mock
+├── linkedin_poster.py      # LinkedIn poster
+├── linkedin_real.py        # Real LinkedIn API
+├── plan_loop.py            # Continuous plan regeneration
+└── whatsapp_server.py      # WhatsApp webhook
+```

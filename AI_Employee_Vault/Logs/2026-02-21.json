@@ -1,0 +1,11 @@
+[
+  {
+    "timestamp": "2026-02-21T17:56:28.696875",
+    "action_type": "tweet_post",
+    "actor": "claude_code",
+    "target": "twitter",
+    "parameters": {},
+    "result": "failure",
+    "error_message": "Endpoint temporarily disabled while fixes are in progress"
+  }
+]

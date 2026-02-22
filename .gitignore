@@ -38,3 +38,8 @@ Watch_This_Folder/*
 .idea/
 *.swp
 *.swo
+
+# Secrets & credentials
+credentials.json
+gmail_token.pickle
+*.pickle

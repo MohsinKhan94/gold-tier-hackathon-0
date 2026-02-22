@@ -1,0 +1,39 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python C:/Users/useerr/Desktop/hackthon-0/bronze-tier/ai-employee-watcher/ralph_wiggum.py"
+          }
+        ]
+      }
+    ]
+  },
+  "mcpServers": {
+    "gmail": {
+      "command": "python",
+      "args": ["C:\\Users\\useerr\\Desktop\\hackthon-0\\bronze-tier\\ai-employee-watcher\\gmail_mcp_server.py"],
+      "env": {}
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT_HERE"
+      }
+    },
+    "odoo": {
+      "command": "python",
+      "args": ["C:\\Users\\useerr\\Desktop\\hackthon-0\\bronze-tier\\ai-employee-watcher\\odoo_mcp_server.py"],
+      "env": {}
+    },
+    "social": {
+      "command": "python",
+      "args": ["C:\\Users\\useerr\\Desktop\\hackthon-0\\bronze-tier\\ai-employee-watcher\\social_mcp_server.py"],
+      "env": {}
+    }
+  }
+}
